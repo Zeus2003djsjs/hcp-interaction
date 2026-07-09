@@ -141,7 +141,10 @@ def tool_node(state: AgentState):
             if result.get("action") == "update_form":
                 for k, v in result["updates"].items():
                     if k in updated_form_state:
-                        updated_form_state[k] = v
+                        if k == "sentiment" and isinstance(v, str):
+                            updated_form_state[k] = v.capitalize()
+                        else:
+                            updated_form_state[k] = v
             elif result.get("action") == "schedule_followup":
                 current_followup = updated_form_state.get("followUpActions", "")
                 append_str = f"Scheduled for {result['date']}: {result['actionItem']}"
